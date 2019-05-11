@@ -1,6 +1,19 @@
 import tensorflow as tf 
 import matplotlib.pyplot as plt
 
+
+### Callback
+class myCallback(tf.keras.callbacks.Callback):
+  def on_epoch_end(self, epoch, logs={}):
+    if(logs.get('acc')>0.6):
+      print("\nReached 60% accuracy so cancelling training!")
+      self.model.stop_training = True
+
+
+callbacks = myCallback()
+
+
+
 # Print tensor flow version
 print(tf.__version__)
 
@@ -36,7 +49,7 @@ test_images = test_images / 255.0
 # Design the model
 
 
-model = tf.keras.models.Sequential([tf.keras.layers.Flatten(), tf.keras.layers.Dense(1024, activation=tf.nn.relu), tf.keras.layers.Dense(10, activation=tf.nn.softmax)])
+model = tf.keras.models.Sequential([tf.keras.layers.Flatten(), tf.keras.layers.Dense(512, activation=tf.nn.relu), tf.keras.layers.Dense(10, activation=tf.nn.softmax)])
 
 '''
 Sequential: That defines a SEQUENCE of layers in the neural network
@@ -55,7 +68,7 @@ Softmax takes a set of values, and effectively picks the biggest one, so, for ex
 
 model.compile(optimizer = tf.train.AdamOptimizer(), loss = 'sparse_categorical_crossentropy', metrics=['accuracy'])
 
-model.fit(training_images, training_labels, epochs=5)
+model.fit(training_images, training_labels, epochs=5, callbacks=[callbacks])
 
 #model.evaluate(test_images, test_labels)
 
