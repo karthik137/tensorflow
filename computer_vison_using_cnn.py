@@ -37,12 +37,12 @@ model = tf.keras.models.Sequential([
   #tf.keras.layers.Conv2D(32, (3,3), activation='relu'),
   tf.keras.layers.MaxPooling2D(2,2),
   tf.keras.layers.Flatten(),
-  tf.keras.layers.Dense(1024, activation='relu'),
+  tf.keras.layers.Dense(128, activation='relu'),
   tf.keras.layers.Dense(10, activation='softmax')
 ])
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 model.summary()
-model.fit(training_images, training_labels, epochs=6)
+model.fit(training_images, training_labels, epochs=10)
 test_loss = model.evaluate(test_images, test_labels)
 
 print(test_loss)
